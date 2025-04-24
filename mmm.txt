@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Satyam Suri Gaming Zone - Enjoy top games and more">
+    <title>WELCOME TO SATYAM SURI GAMING ZONE</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: url('gaming-animation.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+        }
+        header {
+            text-align: center;
+            padding: 40px;
+            background-color: rgba(0, 0, 0, 0.7);
+            font-size: 2em;
+            font-weight: bold;
+            color: #00ffff;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #111;
+        }
+        nav a {
+            padding: 15px 25px;
+            color: white;
+            text-decoration: none;
+        }
+        nav a.active {
+            background-color: #00ffff;
+            color: black;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .content, .games, .admin-login, .admin-panel {
+            display: none;
+            padding: 20px;
+        }
+        .active-view {
+            display: block !important;
+        }
+        .game-box, .admin-box {
+            background: rgba(0, 0, 0, 0.5);
+            margin: 15px 0;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .floating-menu {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 5px;
+            padding: 5px;
+        }
+        .floating-menu button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+        .floating-panel {
+            display: none;
+            position: fixed;
+            top: 50px;
+            left: 0;
+            width: 250px;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            color: white;
+            padding: 20px;
+            z-index: 999;
+        }
+        .floating-panel.active {
+            display: block;
+        }
+        .back-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px;
+            background-color: #444;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>WELCOME TO SATYAM SURI GAMING ZONE</header>
+    <nav>
+        <a href="#" id="nav-home" onclick="navigate('home')">Home</a>
+        <a href="#" id="nav-games" onclick="navigate('games')">Game</a>
+    </nav>
+
+    <div class="content active-view" id="view-home">
+        <div class="game-box">Most Played Game 1</div>
+        <div class="game-box">Most Played Game 2</div>
+        <div class="game-box">Most Played Game 3</div>
+        <div class="game-box">Most Played Game 4</div>
+    </div>
+
+    <div class="games" id="view-games">
+        <div class="game-box">All Game 1</div>
+        <div class="game-box">All Game 2</div>
+        <div class="game-box">All Game 3</div>
+    </div>
+
+    <div class="floating-menu">
+        <button onclick="toggleFloatingPanel()">?</button>
+    </div>
+
+    <div class="floating-panel" id="floatingPanel">
+        <p><a href="#" style="color:white; text-decoration: none;" onclick="navigate('adminLogin')">Admin Login</a></p>
+    </div>
+
+    <div class="admin-login" id="view-adminLogin">
+        <header>WELCOME TO SATYAM SURI GAMING ZONE</header>
+        <div class="admin-box">
+            <input type="text" placeholder="Mobile No" id="adminMobile" oninput="enablePassword()"><br><br>
+            <input type="password" placeholder="Password" id="adminPassword" disabled><br><br>
+            <button onclick="adminLogin()">Login</button>
+        </div>
+    </div>
+
+    <div class="admin-panel" id="view-adminPanel">
+        <header>WELCOME TO SATYAM SURI GAMING ZONE</header>
+        <p>Most Played Games:</p>
+        <div class="admin-box">
+            <input type="file" accept="image/*" id="gameImage"><br><br>
+            <input type="text" placeholder="Game Name" id="gameName"><br><br>
+            <input type="file" id="gameCode"><br><br>
+            <button onclick="previewGame()">Preview</button>
+            <button onclick="saveGame()">Save</button>
+        </div>
+    </div>
+
+    <button class="back-btn" onclick="goBack()">Back</button>
+
+    <script>
+        const historyStack = [];
+
+        function toggleFloatingPanel() {
+            document.getElementById('floatingPanel').classList.toggle('active');
+        }
+
+        function enablePassword() {
+            const mobileInput = document.getElementById('adminMobile');
+            const passwordInput = document.getElementById('adminPassword');
+            passwordInput.disabled = mobileInput.value.trim() === '';
+        }
+
+        function adminLogin() {
+            const mobile = document.getElementById('adminMobile').value;
+            const password = document.getElementById('adminPassword').value;
+            if (mobile === "9135143249" && password === "SaShI@123#321") {
+                navigate('adminPanel');
+            } else {
+                alert("Invalid mobile number or password.");
+            }
+        }
+
+        function previewGame() {
+            alert('Preview functionality not implemented in static HTML.');
+        }
+
+        function saveGame() {
+            alert('Save functionality not implemented in static HTML.');
+        }
+
+        function navigate(viewId) {
+            const current = document.querySelector('.active-view');
+            if (current) {
+                current.classList.remove('active-view');
+                historyStack.push(current.id);
+            }
+            const next = document.getElementById('view-' + viewId);
+            if (next) {
+                next.classList.add('active-view');
+            }
+
+            document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+            const navLink = document.getElementById('nav-' + viewId);
+            if (navLink) navLink.classList.add('active');
+        }
+
+        function goBack() {
+            if (historyStack.length > 0) {
+                const previousId = historyStack.pop();
+                document.querySelector('.active-view').classList.remove('active-view');
+                document.getElementById(previousId).classList.add('active-view');
+
+                document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+                const viewId = previousId.replace('view-', '');
+                const navLink = document.getElementById('nav-' + viewId);
+                if (navLink) navLink.classList.add('active');
+            }
+        }
+
+        // Initialize active nav item
+        document.getElementById('nav-home').classList.add('active');
+    </script>
+</body>
+</html>
